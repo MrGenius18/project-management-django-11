@@ -9,14 +9,16 @@ from django.core.mail import send_mail
 
 # Create your views here.
 def getAllProducts(request):
+    products = Product.objects.all().values()
+    return render(request,'product/allProducts.html',{'products':products})
+
 
     #products = Product.objects.all()
     #products = Product.objects.all().values()
     #products = Product.objects.all().values('pName','pPrice')
     #products = Product.objects.all().values_list()
     #products = Product.objects.all().values_list('pName','pPrice')
-    
-    product = Product.objects.get(id=1)
+
     
     #product = Product.objects.filter(pPrice__gt=800).values()
     #product = Product.objects.filter(pPrice__gte=800).values()
@@ -34,10 +36,8 @@ def getAllProducts(request):
     #product = Product.objects.all().order_by('pName').values()
     #product = Product.objects.all().order_by('-pName').values()
 
-    print(product)
     
-    return render(request,'Product/allProducts.html',{'products':product})
-
+    
 def addProducts(request):
     product = Product(pName="laptop",pPrice=98000,pQty=12,pDesc="dfnsnf",pStatus=True,pColor="Black")
     product.save()
@@ -46,9 +46,10 @@ def addProducts(request):
 
 def deleteProduct(request,id):
     #id = 11
-    product = Product.objects.get(id=id)
-    product.delete()
+    products = Product.objects.get(id=id)
+    products.delete()
     return HttpResponse("Product Deleted")
+
 
 def updateProduct(request,id):
     product = Product.objects.get(id=id)
